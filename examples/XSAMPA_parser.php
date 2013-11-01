@@ -5,7 +5,7 @@ require_once __DIR__ . '/../XSAMPA_parser.php';
 // initialization
 
 $xsampa_string = '"SOJ@ p_hMNE';
-$xsampa = new \Dictionary\XSAMPA_Parser();
+$xsampa = new \Phonetics\XSAMPA_Parser();
 
 // parsing
 

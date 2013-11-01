@@ -1,13 +1,15 @@
 <?php
 
+namespace Phonetics;
+
+require_once __DIR__ . '/reversible_parser.php';
+
 //============================================================================
-// X-SAMPA to IPA parser, with Z-SAMPA extension
+// X-SAMPA to IPA parser, with some of Z-SAMPA extensions
 // right now parses just a few most common symbols
 //============================================================================
 
-namespace Dictionary;
-
-class XSAMPA_Parser {
+class XSAMPA_Parser implements Reversible_Parser {
 	
 	private $transition = array(
 		
@@ -89,11 +91,11 @@ class XSAMPA_Parser {
 	//  in the future
 	//------------------------------------------------
 	
-	private function unparse($ipa_string){
+	function unparse($ipa_string){
 		$output = str_replace(
 			$this->replace,
 			$this->find,
-			$xsampa_string
+			$ipa_string
 		);
 		return $output;
 	}
