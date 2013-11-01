@@ -2,9 +2,19 @@
 
 require_once __DIR__ . '/../XSAMPA_parser.php';
 
-$xsampa_string = '"SOJ@';
-$xsampa = new \Dictionary\XSAMPA_Parser($xsampa_string);
+// initialization
+
+$xsampa_string = '"SOJ@ p_hMNE';
+$xsampa = new \Dictionary\XSAMPA_Parser();
+
+// parsing
+
 $ipa_string = $xsampa->parse($xsampa_string);
 echo "$xsampa_string -> $ipa_string\n";
+
+// unparsing
+
+$xsampa_string_again = $xsampa->unparse($ipa_string);
+echo "$ipa_string -> $xsampa_string_again\n";
 
 ?>
