@@ -2,22 +2,36 @@
 
 namespace Phonetics;
 
-require_once __DIR__ . '/reversible_parser.php';
+require_once __DIR__ . '/simple_parser.php';
 
 //============================================================================
 // X-SAMPA to IPA parser, with some of Z-SAMPA extensions
 // right now parses just a few most common symbols
 //============================================================================
 
-class XSAMPA_Parser implements Reversible_Parser {
+class XSAMPA_Parser extends Simple_Parser
+implements
+	Reversible_Parser {
 	
-	private $transition = array(
+	protected $transition = array(
 		
 		// modifiers
 		// must be first to avoid collisions
 		
+		'_d' => '̪',
 		'_h' => 'ʰ',
 		'_j' => 'ʲ',
+		'_l' => 'ˡ',
+		'_w' => 'ʷ',
+		'_G' => 'ˠ',
+		'_0' => '̥',
+		'_=' => '̩',
+		'_>' => 'ʼ',
+		'_~'  => '̃',
+		
+		// short modifiers
+		'=' => '̩',
+		'~'  => '̃',
 		
 		// lowercase letters
 		
@@ -36,69 +50,58 @@ class XSAMPA_Parser implements Reversible_Parser {
 		
 		// uppercase letters
 		
-		'A' => 'ɑ',
-		'B' => 'β',
-		'E' => 'ɛ',
-		'G' => 'ɣ',
-		'I' => 'ɪ',
-		'J' => 'ɲ',
-		'L' => 'ʎ',
-		'M' => 'ɯ',
-		'N' => 'ŋ',
-		'O' => 'ɔ',
-		'S' => 'ʃ',
-		'T' => 'θ',
-		'U' => 'ʊ',
-		'X' => 'χ',
-		'Z' => 'ʒ',
+		'A'   => 'ɑ',
+		'B'   => 'β',
+		'B\\' => 'ʙ',
+		'D'   => 'ð',
+		'E'   => 'ɛ',
+		'F'   => 'ɱ',
+		'G'   => 'ɣ',
+		'G\\' => 'ɢ',
+		'H'   => 'ɥ',
+		'H\\' => 'ʜ',
+		'I'   => 'ɪ',
+		'J'   => 'ɲ',
+		'L'   => 'ʎ',
+		'L\\' => 'ʟ',
+		'M'   => 'ɯ',
+		'M\\' => 'ɰ',
+		'N'   => 'ŋ',
+		'N\\' => 'ɴ',
+		'O'   => 'ɔ',
+		'Q'   => 'ɒ',
+		'R'   => 'ʁ',
+		'R\\' => 'ʀ',
+		'S'   => 'ʃ',
+		'T'   => 'θ',
+		'U'   => 'ʊ',
+		'V'   => 'ʌ',
+		'W'   => 'ʍ',
+		'X'   => 'χ',
+		'Z'   => 'ʒ',
 		
-		// other systems
+		// other symbols
 		
-		'"' => 'ˈ',
-		'@' => 'ə',
-		':' => 'ː',
-		',' => 'ˌ',
+		'"'   => 'ˈ',
+		'@'   => 'ə',
+		'@\\' => 'ɘ',
+		':'   => 'ː',
+		','   => 'ˌ',
+		'%'   => 'ˌ',
+		'1'   => 'ɨ',
+		'2'   => 'ø',
+		'3'   => 'ɜ',
+		'3\\' => 'ɞ',
+		'4'   => 'ɾ',
+		'6'   => 'ɐ',
+		'7'   => 'ɤ',
+		'8'   => 'ɵ',
+		'9'   => 'œ',
+		'&'   => 'ɶ',
+		'?'   => 'ʔ',
+		'?\\' => 'ʕ',
 		
 	);
-	
-	private $find = array();
-	private $replace = array();
-	
-	//------------------------------------------------
-	// constructor
-	//------------------------------------------------
-	
-	function __construct(){
-		$this->find     = array_keys($this->transition);
-		$this->replace  = array_values($this->transition);
-	}
-	
-	//------------------------------------------------
-	// parsing XSAMPA string to IPA string
-	//------------------------------------------------
-	
-	function parse($xsampa_string){
-		$output = str_replace(
-			$this->find,
-			$this->replace,
-			$xsampa_string
-		);
-		return $output;
-	}
-	
-	//------------------------------------------------
-	// hopefully parsing IPA string to XSAMPA string
-	//  in the future
-	//------------------------------------------------
-	
-	function unparse($ipa_string){
-		$output = str_replace(
-			$this->replace,
-			$this->find,
-			$ipa_string
-		);
-		return $output;
-	}
 	
 }
 
